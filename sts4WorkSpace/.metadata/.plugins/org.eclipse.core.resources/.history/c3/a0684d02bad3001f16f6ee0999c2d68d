@@ -1,0 +1,10 @@
+package com.example.demo.repository;
+
+import org.springframework.data.repository.CrudRepository;
+
+import com.example.demo.entity.BoardEntity;
+
+// Repository 설계: DB 객체와 연결된 entity? BoardEntity, PK의 타입
+public interface BordRepository extends CrudRepository<BoardEntity, Long>{
+	
+}

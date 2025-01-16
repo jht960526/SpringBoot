@@ -1,0 +1,15 @@
+package com.example.demo;
+
+import org.springframework.context.annotation.Configuration;
+
+import lombok.extern.java.Log;
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
+@Configuration
+public class Appconfig {
+	
+	Appconfig(){
+		log.info("= = 생성 = =");
+	}
+}

@@ -1,0 +1,26 @@
+package com.example.demo.controller;
+
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+//@Controller ==> 수행 후 page가 forward
+//@Controller + @ResponsBody
+@RestController
+public class SampleController {
+	
+	@GetMapping("/")
+	public String f0() {
+		return "welcom!!! 환영합니다.";
+	}
+	
+	@GetMapping("/hello1")
+	public String f1() {
+		return "1";
+	}
+	
+	@GetMapping("/hello2")
+	public CarVO f1() {
+		
+		return "1";
+	}
+}

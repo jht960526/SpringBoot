@@ -1,0 +1,21 @@
+package com.example.demo;
+
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.log;
+
+import org.springframework.boot.test.context.SpringBootTest;
+
+import com.example.demo.dto.CarVO;
+
+import lombok.extern.java.Log;
+
+@SpringBootTest
+public class SampleTest {
+	public void f1() {
+		CarVO c1 = CarVO.builder()
+				.model("ABC모델")
+				.price(1000)
+				.color("Black")
+				.build();
+		log.info
+	}
+}

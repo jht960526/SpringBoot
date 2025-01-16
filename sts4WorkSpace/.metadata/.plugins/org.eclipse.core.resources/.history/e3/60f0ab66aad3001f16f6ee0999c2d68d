@@ -1,0 +1,11 @@
+package com.example.demo;
+
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
+public class SpringComponent1 {
+	SpringComponet1() {
+		log.info(null);
+	}
+	
+}

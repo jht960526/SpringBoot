@@ -1,0 +1,12 @@
+package com.example.demo.repository;
+
+import org.springframework.data.repository.CrudRepository;
+import org.yaml.snakeyaml.events.Event.ID;
+
+import com.example.demo.entity.BoardEntity;
+
+// Repository 설계: DB 객체와 연결된 entity? BoardEntity, PK의 타입
+// JPA가 구현 객체를 만들어준다.
+public interface BoardRepository extends CrudRepository<BoardEntity, Long>{
+	
+}

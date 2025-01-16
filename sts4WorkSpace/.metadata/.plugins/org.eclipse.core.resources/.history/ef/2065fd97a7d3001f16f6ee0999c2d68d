@@ -1,0 +1,12 @@
+package com.example.demo.dto;
+
+import lombok.NoArgsConstructor;
+
+// VO(Value Object) : 여러개의 값의 저장 묶음
+
+@NoArgsConstructor
+public class CarVO {
+	String model;
+	int price;
+	String color;
+}

@@ -1,0 +1,8 @@
+package com.example.demo.dto;
+
+// VO(Value Object) : 여러개의 값의 저장 묶음
+public class CarVO {
+	String model;
+	int price;
+	String color;
+}
