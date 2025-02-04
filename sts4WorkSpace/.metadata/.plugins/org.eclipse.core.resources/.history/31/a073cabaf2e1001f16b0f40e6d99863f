@@ -1,0 +1,10 @@
+package com.example.demo.twoway;
+
+
+
+public class FreeBoardEntity {
+	Long bno;
+	String title;
+	String writer;
+	String content;
+}

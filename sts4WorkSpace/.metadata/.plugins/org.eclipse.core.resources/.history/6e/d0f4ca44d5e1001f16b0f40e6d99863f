@@ -1,0 +1,39 @@
+package com.example.demo.onetomany;
+
+import static com.querydsl.core.types.PathMetadataFactory.*;
+
+import com.querydsl.core.types.dsl.*;
+
+import com.querydsl.core.types.PathMetadata;
+import javax.annotation.processing.Generated;
+import com.querydsl.core.types.Path;
+
+
+/**
+ * QPDSFile is a Querydsl query type for PDSFile
+ */
+@Generated("com.querydsl.codegen.DefaultEntitySerializer")
+public class QPDSFile extends EntityPathBase<PDSFile> {
+
+    private static final long serialVersionUID = -1197856749L;
+
+    public static final QPDSFile pDSFile = new QPDSFile("pDSFile");
+
+    public final StringPath filename = createString("filename");
+
+    public final NumberPath<Long> fno = createNumber("fno", Long.class);
+
+    public QPDSFile(String variable) {
+        super(PDSFile.class, forVariable(variable));
+    }
+
+    public QPDSFile(Path<? extends PDSFile> path) {
+        super(path.getType(), path.getMetadata());
+    }
+
+    public QPDSFile(PathMetadata metadata) {
+        super(PDSFile.class, metadata);
+    }
+
+}
+

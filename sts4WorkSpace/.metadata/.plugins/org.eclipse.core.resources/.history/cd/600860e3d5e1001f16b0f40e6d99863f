@@ -1,0 +1,7 @@
+package com.example.demo.onetomany;
+
+public class PDSBoard {
+	private Long pid;
+	private String pname;
+	private String pwriter;
+}

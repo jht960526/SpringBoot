@@ -1,0 +1,23 @@
+package com.example.demo.twoway;
+
+import java.sql.Timestamp;
+
+import io.micrometer.common.lang.NonNull;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+
+
+public class FreeBoardEntity {
+	
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long bno;
+	
+	@NonNull // 자바에서 설정
+	private String title;
+	private String writer;
+	private String content;
+	private Timestamp regdate;
+	private Timestamp updatedate;
+}

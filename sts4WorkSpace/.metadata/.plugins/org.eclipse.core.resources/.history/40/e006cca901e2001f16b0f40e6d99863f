@@ -1,0 +1,15 @@
+package com.example.demo.twoway;
+import java.util.List;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+
+public interface FreeBoardRepository extends JpaRepository<FreeBoardEntity,Long>{
+	
+	//1. 기본제공 메서드 이용
+	//2. 규칙에 맞는 함수 정의 추가하기
+	//3. JPQL 사용하기
+	
+	@Query("select from where group by order by ")
+	public List<Object[]> getBoardInfo();
+}

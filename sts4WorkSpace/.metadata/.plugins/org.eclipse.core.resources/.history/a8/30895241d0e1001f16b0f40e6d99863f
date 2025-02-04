@@ -1,0 +1,6 @@
+package com.example.demo.manytoone;
+
+@Data
+public class ResponseEmailCountDTO {
+	
+}

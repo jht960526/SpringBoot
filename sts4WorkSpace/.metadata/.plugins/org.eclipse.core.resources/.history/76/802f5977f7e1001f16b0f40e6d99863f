@@ -1,0 +1,59 @@
+package com.example.demo.twoway;
+
+import static com.querydsl.core.types.PathMetadataFactory.*;
+
+import com.querydsl.core.types.dsl.*;
+
+import com.querydsl.core.types.PathMetadata;
+import javax.annotation.processing.Generated;
+import com.querydsl.core.types.Path;
+import com.querydsl.core.types.dsl.PathInits;
+
+
+/**
+ * QFreeBoardReplyEntity is a Querydsl query type for FreeBoardReplyEntity
+ */
+@Generated("com.querydsl.codegen.DefaultEntitySerializer")
+public class QFreeBoardReplyEntity extends EntityPathBase<FreeBoardReplyEntity> {
+
+    private static final long serialVersionUID = -1516285052L;
+
+    private static final PathInits INITS = PathInits.DIRECT2;
+
+    public static final QFreeBoardReplyEntity freeBoardReplyEntity = new QFreeBoardReplyEntity("freeBoardReplyEntity");
+
+    public final QFreeBoardEntity board;
+
+    public final DateTimePath<java.sql.Timestamp> regdate = createDateTime("regdate", java.sql.Timestamp.class);
+
+    public final StringPath reply = createString("reply");
+
+    public final StringPath replyer = createString("replyer");
+
+    public final NumberPath<Long> rno = createNumber("rno", Long.class);
+
+    public final DateTimePath<java.sql.Timestamp> updatedate = createDateTime("updatedate", java.sql.Timestamp.class);
+
+    public QFreeBoardReplyEntity(String variable) {
+        this(FreeBoardReplyEntity.class, forVariable(variable), INITS);
+    }
+
+    public QFreeBoardReplyEntity(Path<? extends FreeBoardReplyEntity> path) {
+        this(path.getType(), path.getMetadata(), PathInits.getFor(path.getMetadata(), INITS));
+    }
+
+    public QFreeBoardReplyEntity(PathMetadata metadata) {
+        this(metadata, PathInits.getFor(metadata, INITS));
+    }
+
+    public QFreeBoardReplyEntity(PathMetadata metadata, PathInits inits) {
+        this(FreeBoardReplyEntity.class, metadata, inits);
+    }
+
+    public QFreeBoardReplyEntity(Class<? extends FreeBoardReplyEntity> type, PathMetadata metadata, PathInits inits) {
+        super(type, metadata, inits);
+        this.board = inits.isInitialized("board") ? new QFreeBoardEntity(forProperty("board")) : null;
+    }
+
+}
+

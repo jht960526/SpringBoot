@@ -1,0 +1,55 @@
+package com.example.demo.service;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.example.demo.dto.GuestBookDTO;
+import com.example.demo.entity.GuestBookEntity;
+import com.example.demo.repository.GuestBookRepository;
+
+/*
+ *  DB 객체 -> java entity
+ *  사용자 <--- controller DTO <---- service DTO <-----repository entity
+ */
+
+
+@Service
+public class GuestBookService {
+	
+	@Autowired
+	GuestBookRepository repo;
+	
+	public List<GuestBookRepository> selectAll() {
+		List<GuestBookRepository>booklist = (List<GuestBookRepository>)repo.findAll().iterator();
+		return booklist;
+	}
+	
+	public GuestBookEntity dtoToEntity(GuestBookDTO dto) {
+		GuestBookEntity entity = GuestBookEntity.builder()
+				.gno(dto.getGno())
+				.title(dto.getContent())
+				.content(dto.getContent())
+				.writer(dto.getWriter())
+				.build();
+		entity.setRegDate(null);
+		entity.setModDate(null);
+		
+		return entity;
+	}
+	
+	
+	
+	public GuestBookDTO entityToDTO(GuestBookEntity entity){
+		GuestBookDTO dto = GuestBookDTO.builder()
+				.gno(entity.getGno())
+				.title(entity.getTitle())
+				.content(entity.getContent())
+				.writer(entity.getWriter())
+				.regDate(entity.getRegDate())
+				.modDate(entity.getModDate())
+				.build();
+		return dto;
+	}
+}

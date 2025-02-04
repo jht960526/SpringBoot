@@ -1,0 +1,93 @@
+package com.example.demo;
+
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.log;
+
+import java.util.stream.IntStream;
+
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+
+import com.example.demo.manytoone.CustomerEntity;
+import com.example.demo.manytoone.CustomerRepository;
+import com.example.demo.manytoone.EmailBookEntity;
+import com.example.demo.manytoone.EmailBookRepository;
+
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
+@SpringBootTest
+public class ManyToOneTest2 {
+	
+	
+	@Autowired
+	CustomerRepository custRepo;
+	
+	@Autowired
+	EmailBookRepository emailRepo;
+	
+	//emailbook data 조회
+	//@Test
+	void emailSeletAll() {
+		emailRepo.findAll().forEach(entity->{
+			log.info(entity.toString());
+			log.info(entity.getEmail() + "===>" + entity.getCust().getCustomerName());
+		});
+	}
+	
+	
+	//특정 고객의 email insert
+	@Test
+	public void emailInsert() {
+		String customerId = "cust004";
+		CustomerEntity cust = CustomerEntity.builder().customerId(customerId)
+				.build();
+		
+		EmailBookEntity[] arr = new EmailBookEntity[3];
+		arr[0] = EmailBookEntity.builder()
+				.email("aaaa111@gamil.com")
+				.password("1234")
+				.mainYn(true)
+				.cust(cust)
+				.build();
+		
+		arr[1] = EmailBookEntity.builder()
+				.email("qqqq222@gamil.com")
+				.password("1234")
+				.mainYn(false)
+				.cust(cust)
+				.build();
+		
+		arr[2] = EmailBookEntity.builder()
+				.email("qqqq333@gamil.com")
+				.password("1234")
+				.mainYn(true)
+				.cust(cust)
+				.build();
+		for(EmailBookEntity entity:arr) {
+			emailRepo.save(entity);
+		}
+	}
+	
+	
+	//고객 조회
+	//@Test
+	public void selectAll() {
+		custRepo.findAll().forEach(cust->{
+			log.info(cust.toString());
+		});
+	}
+	
+	// 고객 5명을 insert 하기
+	//@Test
+	public void custInsert() {
+		IntStream.range(1, 5).forEach(i->{
+			CustomerEntity cust = CustomerEntity.builder()
+					.customerId("cust" + i)
+					.customerName("택" + i)
+					.customerPhone("010-1234-1233"+i)
+					.build();
+			custRepo.save(cust);
+		});
+	}
+}

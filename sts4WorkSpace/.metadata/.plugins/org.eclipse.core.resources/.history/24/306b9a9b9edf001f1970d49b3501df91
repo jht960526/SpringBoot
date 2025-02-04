@@ -1,0 +1,108 @@
+package com.example.demo;
+
+import java.util.stream.IntStream;
+
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import com.example.demo.entity.MemberEntity;
+import com.example.demo.entity.MemberRole;
+import com.example.demo.entity.ProfileEntity;
+import com.example.demo.repository.MemberRepository;
+import com.example.demo.repository.ProfileRepository;
+
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
+public class ManyToOneTest {
+	
+	@Autowired
+	MemberRepository memberRepo;
+	
+	@Autowired
+	ProfileRepository profileRepo;
+	
+	//[Quiz1] profile의 fno=7인 data조회
+	// Primary key로 조회함으로 default 제공함수를 사용한다.
+	@Test
+	public void quiz1() {
+		profileRepo.findById(7L).ifPresentOrElse(pro->{
+			log.info(pro.toString());
+		}, ()->{log.info("data가 존재하지않음");});
+	}
+	//[Quiz2] profile의 fname like '%face%' data조회
+	//규칙에 맞는 함수를 추가한다.
+	@Test
+	public void quiz2() {
+		profileRepo.findByFnameContaining("face").forEach(pro->{
+			log.info(pro.toString());
+		});
+	}
+	
+	
+	//[Quiz3] profile의 currenYN이 true인 data조회
+	@Test
+	public void quiz3() {
+		profileRepo.findByCurrentYnTrue().forEach(pro->{
+			log.info(pro.toString());
+		});
+	}
+	
+	@Test
+	public void quiz3_2() {
+		profileRepo.findByCurrentYn(true).forEach(pro->{
+			log.info(pro.toString());
+		});
+	}
+	
+	
+	//[Quiz4] 특정 member 'ghdxor'의 profile data 조회
+	@Test
+	public void quiz4() {
+		MemberEntity member = MemberEntity.builder().mid("ghdxor").build();
+		profileRepo.findByMember(member).forEach(pro->{
+			log.info(pro.toString());
+			System.out.println("파일 이름:" + pro.getFname());
+			System.out.println("현재 profile여부 : " + pro.isCurrenYn());
+		});
+	}
+	
+	// 1번 10번 2명의 profile을 등록
+	@Test
+	public void insertProfile() {
+		MemberEntity member1 = MemberEntity.builder().mid("ghdxor").build();
+		MemberEntity member9 = memberRepo.findById("ghdxor").orElse(null);
+		
+		IntStream.range(1, 5).forEach(i->{
+			ProfileEntity profile = ProfileEntity.builder()
+					.fname("face-"+i)
+					.currenYn(i==5? true:false)
+					.member(member1)
+					.build();
+			profileRepo.save(profile);
+		});
+		
+		IntStream.range(6, 10).forEach(i->{
+			ProfileEntity profile = ProfileEntity.builder()
+					.fname("hair-"+i)
+					.currenYn(i==10? true:false)
+					.member(member9)
+					.build();
+			profileRepo.save(profile);
+		});
+	}
+	
+	
+	@Test
+	public void memberInsert() {
+		IntStream.rangeClosed(1, 10).forEach(i->{
+			MemberEntity member = MemberEntity.builder()
+					.mid("asd" + i)
+					.mpassword("1234")
+					.mname("ghdxor"+(11-i))
+					.mrole(i%5==0?MemberRole.MANAGER:i==9?MemberRole.ADMIN:MemberRole.USER) //manager(2), admin(1), user(7)
+					.build();
+			memberRepo.save(member);
+		});
+	}
+}

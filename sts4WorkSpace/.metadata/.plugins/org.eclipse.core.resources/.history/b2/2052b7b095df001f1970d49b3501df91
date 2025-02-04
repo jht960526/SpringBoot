@@ -1,0 +1,16 @@
+package com.example.demo.entity;
+
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+
+public class ProfileEntity {
+	
+	
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	// auto 
+	Long fno;
+	String fname;
+	boolean currenYn; //DB의 칼럼이름은?currenYn
+}

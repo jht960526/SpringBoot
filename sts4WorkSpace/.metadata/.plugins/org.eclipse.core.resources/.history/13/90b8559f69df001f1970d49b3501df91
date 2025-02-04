@@ -1,0 +1,9 @@
+package com.example.demo.entity;
+
+public class GuestBookEntity {
+		private Long gno;
+		private String title;
+		private String content;
+		private LocalDateTime regDate;
+		private LocalDateTime modDate;
+}

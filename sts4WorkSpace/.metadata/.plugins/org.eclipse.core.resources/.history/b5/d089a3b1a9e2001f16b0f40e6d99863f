@@ -1,0 +1,18 @@
+package com.example.demo.onetoone;
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
+@Data
+@Entity
+@Table(name="tbl_user")
+public class UserEntity {
+	@Id
+	@Column(name="user_id")
+	String userid;
+	@Column(name="user_name")
+	String username;
+	//주 테이블에서 참조하기
+	@OneToOne
+	@JoinColumn(name="phone_id")
+	UserCellPhoneVO phone;
+}

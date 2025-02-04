@@ -1,0 +1,8 @@
+package com.example.demo.entity;
+
+public class EmailBookEntity {
+	Long bookId;
+	String email;
+	String password;
+	boolean mainYn;
+}

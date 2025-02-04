@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+<h1>타임리프사용하기</h1>
+<p th:text="${myname}">여기는 X</p>
+<p th:text="${myname}">여기는 X</p>
+<h2>Board정보</h2>
+<p th:text = "${board.title}"></p>
+<p th:text = "${board.content}"></p>
+</body>
+</html>

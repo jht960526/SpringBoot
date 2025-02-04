@@ -1,0 +1,17 @@
+package com.example.demo.entity;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+
+
+@Entity //table DDL 만들어짐 (create table CustomerEntity~~~)
+public class CustomerEntity {
+	
+	
+	@Id // Primary key임을 의미(없으면 오류)
+	@Column(name="customer_id")
+	String customerId; //@Column생략 시, DB에 컬럼 : customer_id
+	String customerName; // customer_name
+	String customerPhone; // customer_phone
+}

@@ -1,0 +1,46 @@
+package com.example.demo;
+
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+
+import com.example.demo.onetoone.UserCellPhoneEntity;
+import com.example.demo.onetoone.UserCellPhoneRepository;
+import com.example.demo.onetoone.UserEntity;
+import com.example.demo.onetoone.UserRepository;
+
+@SpringBootTest
+public class OneToOneTest {
+	@Autowired
+	UserRepository userRepo;
+	
+	@Autowired
+	UserCellPhoneRepository phoneRepo;
+	
+	@Autowired
+	UserRepository userRepo2;
+	
+	@Autowired
+	UserCellPhoneRepository phoneRepo2;
+	
+	
+	// 주 table을 이용해서 부table에 insert
+	@Test
+	void f1() {
+		
+		UserCellPhoneEntity phone = UserCellPhoneEntity.builder()
+				.phoneNumber("010-1234-5678")
+				.model("아이폰16")
+				.build();
+		UserCellPhoneEntity newPhone =  phoneRepo.save(phone);
+		
+		UserEntity user = UserEntity.builder()
+				.userid("qoqo11")
+				.username("정홍택")
+				.phone(newPhone)
+				.build();
+		userRepo.save(user);
+		
+		
+	}
+}

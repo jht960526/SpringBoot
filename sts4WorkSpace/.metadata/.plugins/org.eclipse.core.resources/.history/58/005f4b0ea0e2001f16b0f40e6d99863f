@@ -1,0 +1,9 @@
+package com.example.demo.multikey;
+
+import java.io.Serializable;
+
+
+// Serializable(직렬화) ~ Network전송시 바이너리로 변경하여 보냄
+public class MultiKeyA implements Serializable{
+	Integer id1;
+}

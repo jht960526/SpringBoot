@@ -1,0 +1,13 @@
+package com.example.demo.entity;
+
+import jakarta.persistence.Id;
+
+public class CustomerEntity {
+	
+	
+	@Id // Primary key임을 의미(없으면 오류)
+	@Column(name="customer_id")
+	String customerId;
+	String customerName;
+	String customerPhone;
+}

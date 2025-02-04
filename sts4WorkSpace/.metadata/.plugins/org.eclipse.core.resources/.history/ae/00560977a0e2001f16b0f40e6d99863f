@@ -1,0 +1,13 @@
+package com.example.demo.multikey;
+
+import jakarta.persistence.Id;
+
+public class MultiKeyAEntity {
+	@Id
+	Integer id1;
+	
+	@Id
+	Integer id2;
+	String name;
+	String phone;
+}

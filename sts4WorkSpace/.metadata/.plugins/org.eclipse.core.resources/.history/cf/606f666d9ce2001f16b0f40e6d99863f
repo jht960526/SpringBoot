@@ -1,0 +1,259 @@
+package com.example.demo;
+
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.IntStream;
+
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
+
+import com.example.demo.twoway.FreeBoardEntity;
+import com.example.demo.twoway.FreeBoardRepository;
+import com.example.demo.twoway.FreeReplyEntity;
+import com.example.demo.twoway.FreeReplyRepository;
+import com.example.demo.twoway.QFreeBoardEntity;
+import com.fasterxml.jackson.databind.deser.impl.BeanAsArrayBuilderDeserializer;
+import com.querydsl.core.BooleanBuilder;
+
+import jakarta.transaction.Transactional;
+import lombok.extern.slf4j.Slf4j;
+
+@SpringBootTest
+@Slf4j
+public class TwoWayTest {
+	
+	@Autowired
+	FreeBoardRepository boardRepo;
+	
+	@Autowired
+	FreeReplyRepository replyRepo;
+	
+	void dynamicSQL() {
+		//type, keyword에 의해 동적으로 SQL문을 만들기
+		String type="";
+		String keyword="";
+		QFreeBoardEntity board = QFreeBoardEntity.freeBoardEntity;
+		BooleanBuilder builder = new BooleanBuilder();
+		
+		switch(type) {
+		case "title":builder.and(board.title.like("%"+keyword+"%"));break;
+		case "writer":builder.and(board.writer.like("%"+keyword+"%"));break;
+		case "content":builder.and(board.content.like("%"+keyword+"%"));break;
+		}
+		builder.and(board.bno.gt(0L)); //and bno > 0
+		boardRepo.findAll(builder);
+	}
+	
+	
+	@Test
+	void q7() {
+		replyRepo.findAll().forEach(r->{
+			System.out.println(r.toString());
+			System.out.println("Board:" + r.getBoard().toString());
+		});
+	}
+	
+	
+	void getWriter() {
+		int page = 1;
+		String writer = "user1";
+		String[] property = {"bno"};
+		Pageable pageable = PageRequest.of(page-1,2, Sort.by(Direction.DESC, property));
+		Page<FreeBoardEntity> result = boardRepo.findByWriter(writer, pageable);
+		
+		System.out.println("현재page: " + result.getNumber());
+		System.out.println("한페이지의건수: " + result.getSize());
+		System.out.println("전체 건수: " + result.getTotalElements());
+		System.out.println("전체 페이지 수: " + result.getTotalPages());
+		result.getContent().forEach(board->{
+			System.out.println(board);
+		});
+	}
+	
+	
+	
+	//[Q6] 1번째 page 10건 조회, bno desc sort (1page는 10건임)
+	void q6() {
+		int page = 1;
+		String[] property = {"bno"};
+		Pageable pageable = PageRequest.of(page-1, 3, Sort.by(Direction.DESC, property));
+		Page<FreeBoardEntity> result = boardRepo.findAll(pageable);
+		
+		System.out.println("getNumber:" + result.getNumber()); //0
+		System.out.println("getSize:" + result.getSize()); //3
+		System.out.println("getTotalElements:" + result.getTotalElements());
+		
+		result.getContent().forEach(board->{
+			System.out.println(board);
+		});
+		
+	}
+	
+	
+	
+	//[Q5] Board의 댓글 갯수....JPQL를 이용하기(SQL문의 수를 줄이기 위해 사용)
+	
+	//@Transactional
+	void replyCount2() {
+		boardRepo.getBoardInfo().forEach(arr->{
+			log.info(Arrays.toString(arr));
+		});
+		
+		System.out.println("----------------------------");
+		boardRepo.getBoardInfo2().forEach(arr->{
+			log.info(Arrays.toString(arr));
+			
+			
+		});
+		
+		System.out.println("----------------------------");
+		boardRepo.getBoardInfo3().forEach(arr->{
+			log.info(Arrays.toString(arr));
+		});
+	}
+	
+	// Board의 댓글 개수 출력 ....select가 2번
+	//@BatchSize(size = 100)가 없으면 board개수만큼 reply를 select
+	@Transactional
+	void replyCount() {
+		boardRepo.findAll().forEach(board->{
+			log.info("제목:" + board.getTitle());
+			log.info("댓글갯수:" + board.getReplies().size());
+		});
+	}
+	
+	//user1이 작성한 board 정보 조회
+	void selectByWriter() {
+		String writer = "user1";
+		//boardRepo.findByWriter(writer).for
+	}
+	
+	//댓글의 board가 null인 data 조회, board 채우기
+	//@Test
+	void selectReplyNull() {
+		FreeBoardEntity board107 = FreeBoardEntity.builder().bno(107L).build();
+		replyRepo.findByBoardIsNull().forEach(reply->{
+			log.info(reply.toString());
+			reply.setBoard(board107); // update
+			replyRepo.save(reply);
+		});
+	}
+	
+	//댓글 추가
+	//@Test
+	void insertReply() {
+		IntStream.rangeClosed(1,5).forEach(i->{
+			FreeReplyEntity reply = FreeReplyEntity.builder()
+					.reply("신한DS" + i)
+					.replyer("user7")
+					//.board(board) // 의도적으로 null
+					.build();
+			replyRepo.save(reply);
+		});
+	}
+	
+	//댓글 추가
+	//@Test
+		void insertReply2() {
+			FreeBoardEntity board7 = FreeBoardEntity.builder().bno(107L).build();
+			IntStream.rangeClosed(1,5).forEach(i->{
+				FreeReplyEntity reply = FreeReplyEntity.builder()
+						.reply("신한DS아카데미" + i)
+						.replyer("user7")
+						.board(board7) // 의도적으로 null
+						.build();
+				replyRepo.save(reply);
+			});
+		}
+	
+	
+	
+	//[Q4] reply의 참조컬럼이 비어있다. (1L,2L,3L,4L,5L)
+	void q4() {
+		Long[] arr = {1L,2L,3L,4L,5L};
+		//댓글들 가져오기
+		List<FreeReplyEntity> replies = replyRepo.findAllById(Arrays.asList(arr));
+		
+		//4번 Board 가져오기
+		FreeBoardEntity entity = boardRepo.findById(4L).orElse(null);
+		if(entity!=null) {
+			//4번 Board의 reply들
+			List<FreeReplyEntity> boardReplies = entity.getReplies();
+			
+			//reply의 board가 null값들의 board를 수정하기
+			replies.forEach(reply->{
+				
+				boardReplies.add(reply);
+			});
+			entity.setContent("--------댓글의 추가됨 ---------");
+			entity.setTitle("snow!");
+			boardRepo.save(entity);
+		}
+	}
+	
+	
+	//[Q3] 특정 board 1건 조회, board의 reply 추가
+	//@Test
+	void q3() {
+		Long bno = 109L;
+		boardRepo.findById(bno).ifPresent(board->{
+			log.info("before: " + board.toString());
+			//댓글을 5개 추가
+			List<FreeReplyEntity> replies = board.getReplies();
+			IntStream.rangeClosed(1, 3).forEach(i->{
+				FreeReplyEntity reply = FreeReplyEntity.builder()
+						.reply("너무 춥다" + i)
+						.replyer("user11")
+						.board(board) //주의!!
+						.build();
+				replies.add(reply); //insert
+			});
+			board.setContent("---------의견있음-!!!--------"); //update
+			boardRepo.save(board);
+		});
+	}
+	
+	
+	//Board의 내용 지우기
+	//@Test
+	void deleteBoard() {
+		boardRepo.deleteAll();
+	}
+	
+	
+	
+	//[Q2] board 모두 조회
+	//@Test
+	void q2() {
+		boardRepo.findAll().forEach(board->{
+			//log.info(board.toString());
+			log.info(board.getBno()+"----"+board.getTitle());
+			board.getReplies().forEach(reply->{
+				log.info("댓글:"+reply.toString());
+			});
+		
+			});
+	}
+	
+	//[Q1] board10건 insert
+	//@Test
+	void q1() {
+		IntStream.rangeClosed(1, 10).forEach(i->{
+			
+			FreeBoardEntity board2 = new FreeBoardEntity();
+			FreeBoardEntity board = FreeBoardEntity.builder()
+					.title("JPA재밌음"+i)
+					.content("JPA이용...양방향 연습"+(10-i))
+					.writer("user"+(i%3+ 1))
+					.build();
+			boardRepo.save(board);
+		});
+	}
+	
+}

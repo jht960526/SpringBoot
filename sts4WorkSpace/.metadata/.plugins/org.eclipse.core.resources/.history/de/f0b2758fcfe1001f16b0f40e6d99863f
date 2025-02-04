@@ -1,0 +1,21 @@
+package com.example.demo.manytoone;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+@Service
+public class EmailBookService {
+	
+	@Autowired
+	CustomerRepository custRepo;
+	
+	@Autowired
+	EmailBookRepository emailRepo;
+	
+	//[Q1] book_id가 1인 이메일 정보 조회
+	public EmailBookRepository q1(Long book_id) {
+		emailRepo.findById(book_id).orElse(null);
+	}
+	
+	
+}

@@ -1,0 +1,18 @@
+package com.example.demo.controller;
+
+import java.util.List;
+
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.example.demo.dto.GuestBookDTO;
+
+@RestController
+@RequestMapping("/guest")
+public class GuestBookController {
+	@GetMapping("/list2")
+	public List<GuestBookDTO> selectAll2(){
+		
+	}
+}

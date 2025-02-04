@@ -1,0 +1,10 @@
+package com.example.demo.repository;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import com.example.demo.entity.ProfileEntity;
+
+public interface ProfileRepository extends JpaRepository<ProfileEntity, Long>{
+	// 규칙에 맞는 함수들을 정의한다.
+	List<ProfileEntity> findByFname(String fname);
+}

@@ -1,0 +1,6 @@
+package com.example.demo.entity;
+
+// enum은 열거형 data, 한정적 값을의 묶음, 상수들의 묶음
+public class MemberRole {
+	ADIMN, MANAGER, USER;
+}

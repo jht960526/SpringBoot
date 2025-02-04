@@ -1,0 +1,33 @@
+package com.example.demo;
+
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+
+import com.example.demo.multikey.MultiKeyAEntity;
+import com.example.demo.multikey.MultiKeyB;
+import com.example.demo.multikey.MultikeyARepository;
+
+@SpringBootTest
+public class MultikeyTest {
+	@Autowired
+	MultikeyARepository aRepo;
+	
+	
+	public void f2() {
+		MultiKeyB id = MultiKeyB.builder()
+				.orderId(1)
+				.productId(200)
+				.title("EmbeddedId사용함2!!!!!!")
+				.build();
+	}
+	
+	
+	//@Test
+	public void f1() {
+		MultiKeyAEntity entity = MultiKeyAEntity.builder()
+				.orderId(2)
+				
+				.build();
+	}
+}

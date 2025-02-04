@@ -1,0 +1,14 @@
+package com.example.demo.entity;
+
+import jakarta.persistence.EnumType;
+
+public class MemberEntity {
+	@Id // PK를 의미한다.
+	String mid;
+	String mpassword;
+	String mname;
+	
+	@Enumerted(EnumType.STRING)
+	MemberRole role
+	
+}

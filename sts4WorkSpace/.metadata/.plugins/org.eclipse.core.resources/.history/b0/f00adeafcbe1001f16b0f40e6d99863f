@@ -1,0 +1,14 @@
+package com.example.demo.manytoone;
+
+import org.springframework.data.querydsl.QuerydslPredicateExecutor;
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.PagingAndSortingRepository;
+
+public interface EmailBookRepository extends CrudRepository<EmailBookEntity, Long>,
+						PagingAndSortingRepository<EmailBookEntity, Long>,
+						QuerydslPredicateExecutor<EmailBookEntity>{
+	// 1. 기본 제공 함수들이 있다. findAll(), findById(), save(), count()
+	
+	// 2. 규칙에 맞는 함수정의 추가하기
+	List<EmailBookEntity>findByCust(CustomerEntity cust);
+}

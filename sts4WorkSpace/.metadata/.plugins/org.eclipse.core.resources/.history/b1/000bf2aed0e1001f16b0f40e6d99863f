@@ -1,0 +1,33 @@
+package com.example.demo.manytoone;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+@Service
+public class EmailBookService {
+	
+	@Autowired
+	CustomerRepository custRepo;
+	
+	@Autowired
+	EmailBookRepository emailRepo;
+	
+	//[Q1] book_id가 1인 이메일 정보 조회
+	public EmailBookEntity q1(Long book_id) {
+		return emailRepo.findById(book_id).orElse(null);
+	}
+	
+	////[Q2] customerId="cust2"인 이메일 정보 조회
+	public List<EmailBookEntity> q2(String customerId){
+		CustomerEntity cust = CustomerEntity.builder().customerId(customerId).build();
+		return emailRepo.findByCust(cust);
+	}
+	
+	///[Q3] 고객별 이메일의 개수를 조회 cust1-0개
+	List<ResponseEmailCountDTO> q3(){
+		
+	}
+	
+}

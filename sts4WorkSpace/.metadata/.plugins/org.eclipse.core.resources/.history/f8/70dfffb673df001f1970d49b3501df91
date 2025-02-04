@@ -1,0 +1,30 @@
+package com.example.demo.service;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.example.demo.repository.GuestBookRepository;
+
+/*
+ *  DB 객체 -> java entity
+ *  사용자 <--- controller DTO <---- service DTO <-----repository entity
+ */
+
+
+@Service
+public class GuestBookService {
+	
+	@Autowired
+	GuestBookRepository repo;
+	
+	public List<GuestBookRepository> selectAll() {
+		List<GuestBookRepository>booklist = (List<GuestBookRepository>)repo.findAll().iterator();
+		return booklist;
+	}
+	
+	entityToDTO(){
+		
+	}
+}

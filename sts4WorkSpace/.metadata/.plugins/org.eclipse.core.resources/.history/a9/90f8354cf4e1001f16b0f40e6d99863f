@@ -1,0 +1,65 @@
+package com.example.demo.onetomany;
+
+import java.util.List;
+
+import org.hibernate.event.spi.EventManager.CacheActionDescription;
+
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
+import jakarta.transaction.Transactional;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
+
+@Getter @Setter @ToString(exclude = {"files"})
+@Builder
+@AllArgsConstructor @NoArgsConstructor
+
+@Entity
+@Table(name = "tbl_pdsboard")
+public class PDSBoardEntity {
+	
+	@Id // 필수
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long pid;
+	private String pname;
+	private String pwriter;
+	
+	// cascade는 부모의 DML이 자식에 영향을 미친다.
+	// fetch는 부모의 조회 시 자식이 조회된다. (EAGER)
+	// fetch는 부모의 조회 시 자식이 조회되지않음 (LAZY)
+	// LAZY 사용한 경우 : toString에 제외되어있지않으면 오류
+	// LAZY 사용한 경우 : getFiles() 사용 오류
+	// LAZY 사용한 경우 : getFiles() 사용가능하려면 @Transactional 사용
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinColumn(name ="pdsno") //tbl_pdsfile에 컬럼이 생성된다.
+	List<PDSFileEntity> files;
+}
+
+
+
+/* [@JoinColumn(name = "pdsno")]
+ * alter table if exists tbl_pdsboard_files 
+       add constraint FK9a9hawv3rb5rhi73sjsqwl6kv 
+       foreign key (pdsboard_pid) 
+       references tbl_pdsboard (pid)
+ */
+
+// 하나의 board는 여러개의 file를 갖는다.
+/* joincolumn의 설정이 업스면 중간table이 생긴다.
+  create table tbl_pdsfile (
+        fno bigint not null auto_increment,
+        filename varchar(255),
+        primary key (fno)
+    ) engine=InnoDB
+ */

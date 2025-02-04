@@ -1,0 +1,23 @@
+package com.example.demo.multikey;
+
+import jakarta.persistence.EmbeddedId;
+import jakarta.persistence.Entity;
+import jakarta.persistence.IdClass;
+import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Builder
+@NoArgsConstructor @AllArgsConstructor
+@Data
+@Entity
+@Table(name = "tbl_child2")
+public class MultiKeyBEntity {
+	@EmbeddedId
+	MultiKeyB id;
+	
+	String title;
+	int count;
+}

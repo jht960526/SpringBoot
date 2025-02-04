@@ -1,0 +1,20 @@
+package com.example.demo.controller;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+@Controller
+@RequestMapping("/section1")
+public class HelloController {
+	
+	@GetMapping("/hello1")
+	public void f1(Model model) {
+		
+	}
+	
+	@GetMapping("/hello2")
+	public String f2() {
+		return "section1/hello1"; //templates/section1/hello1.html
+	}
+}

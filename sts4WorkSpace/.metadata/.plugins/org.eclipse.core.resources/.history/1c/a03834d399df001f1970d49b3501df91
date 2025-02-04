@@ -1,0 +1,23 @@
+package com.example.demo.entity;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Table;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
+
+
+@Getter @Setter @ToString
+@Entity
+@Table(name = "tbl_members")
+public class MemberEntity {
+	@Id // PK를 의미한다.
+	String mid;
+	String mpassword;
+	String mname;
+	
+	@Enumerted(EnumType.STRING)
+	MemberRole role
+	
+}

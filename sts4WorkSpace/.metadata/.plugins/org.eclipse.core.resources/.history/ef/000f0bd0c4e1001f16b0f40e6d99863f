@@ -1,0 +1,57 @@
+package com.example.demo.entity;
+
+import static com.querydsl.core.types.PathMetadataFactory.*;
+
+import com.querydsl.core.types.dsl.*;
+
+import com.querydsl.core.types.PathMetadata;
+import javax.annotation.processing.Generated;
+import com.querydsl.core.types.Path;
+import com.querydsl.core.types.dsl.PathInits;
+
+
+/**
+ * QEmailBookEntity is a Querydsl query type for EmailBookEntity
+ */
+@Generated("com.querydsl.codegen.DefaultEntitySerializer")
+public class QEmailBookEntity extends EntityPathBase<EmailBookEntity> {
+
+    private static final long serialVersionUID = 1096873143L;
+
+    private static final PathInits INITS = PathInits.DIRECT2;
+
+    public static final QEmailBookEntity emailBookEntity = new QEmailBookEntity("emailBookEntity");
+
+    public final NumberPath<Long> bookId = createNumber("bookId", Long.class);
+
+    public final QCustomerEntity cust;
+
+    public final StringPath email = createString("email");
+
+    public final BooleanPath mainYn = createBoolean("mainYn");
+
+    public final StringPath password = createString("password");
+
+    public QEmailBookEntity(String variable) {
+        this(EmailBookEntity.class, forVariable(variable), INITS);
+    }
+
+    public QEmailBookEntity(Path<? extends EmailBookEntity> path) {
+        this(path.getType(), path.getMetadata(), PathInits.getFor(path.getMetadata(), INITS));
+    }
+
+    public QEmailBookEntity(PathMetadata metadata) {
+        this(metadata, PathInits.getFor(metadata, INITS));
+    }
+
+    public QEmailBookEntity(PathMetadata metadata, PathInits inits) {
+        this(EmailBookEntity.class, metadata, inits);
+    }
+
+    public QEmailBookEntity(Class<? extends EmailBookEntity> type, PathMetadata metadata, PathInits inits) {
+        super(type, metadata, inits);
+        this.cust = inits.isInitialized("cust") ? new QCustomerEntity(forProperty("cust")) : null;
+    }
+
+}
+

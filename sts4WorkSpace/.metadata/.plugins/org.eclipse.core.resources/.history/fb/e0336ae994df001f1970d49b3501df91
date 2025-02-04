@@ -1,0 +1,8 @@
+package com.example.demo.entity;
+
+public class MemberEntity {
+	String mid;
+	String mpassword;
+	String mname;
+	
+}

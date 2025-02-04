@@ -1,0 +1,5 @@
+package com.example.demo.onetomany;
+
+public class PDSFile {
+	Long fno;
+}

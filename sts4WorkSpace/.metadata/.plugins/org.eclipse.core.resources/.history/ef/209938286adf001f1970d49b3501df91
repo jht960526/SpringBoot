@@ -1,0 +1,16 @@
+package com.example.demo.dto;
+
+import java.time.LocalDateTime;
+
+
+//DTO(Data Transfer Object)
+//Browser 요청 DTO -> Controller DTO -> Service -> Repository(DAO) -> 
+//응답<- Controller DTO<-Service DTO<- Repository entity
+
+public class GuestBookDTO {
+	private Long gno;
+	private String title;
+	private String content;
+	private LocalDateTime regDate;
+	private LocalDateTime modDate;
+}

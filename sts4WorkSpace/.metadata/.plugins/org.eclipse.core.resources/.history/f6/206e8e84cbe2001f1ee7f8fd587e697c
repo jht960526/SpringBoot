@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+
+<style>
+	table, tr, td{
+		border: 1px solid black;
+		border-collapse: collapse;
+	}
+	
+	td{
+		
+	}
+	
+</style>
+</head>
+<body>
+	<div id="container">
+	<h1>FreeBoard 목록</h1>
+	<table border = "1">
+		<tr>
+		<td>index</td>
+		<td>count</td>
+		<td>번호</td>
+		<td>제목</td>
+		<td>내용</td>
+		<td>작성자</td>
+		<td>등록일</td>
+		<td>수정일</td>
+		</tr>
+		<tr 
+		th:each="board, iterStatus:${board:boardlist}"
+		th:class="${iterStatus.odd}? 'my class1'"
+		th:classappend="${iterStatus.first or iterStatus.last}?'myclass2'"
+		th:with ="target1 = 'user1' , target2 ='user2'">
+		
+			<td>[[${iterStatus.index}]]</td>
+			<td>[[${iterStatus.count}]]...
+					[[${iterStatus.size}]]건...
+					[[${iterStatus.first}]]
+			</td>
+			<td th:text="${board.bno}"></td>
+			<td>[[${board.title}]]</td>
+			<td>[[${board.content}]]</td>
+			<td>[[${board.writer}]]</td>
+			<td>[[${#dates.format(board.regdate, 'yyy-MM-dd')}]]</td>
+			<td>[[${board.updatedate}]]</td>
+			<td>
+				<button th:if="${board.writer==target1}">수정</button>
+				<button th:unless="${board.writer!=target1}">View</button>
+			</td>
+		</tr>
+		</table>
+		</div>
+</body>
+</html>

@@ -1,0 +1,48 @@
+package com.example.demo;
+
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.log;
+
+import java.util.stream.IntStream;
+
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+
+import com.example.demo.manytoone.CustomerEntity;
+import com.example.demo.manytoone.CustomerRepository;
+import com.example.demo.manytoone.EmailBookRepository;
+
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
+@SpringBootTest
+public class ManyToOneTest2 {
+	
+	
+	@Autowired
+	CustomerRepository custRepo;
+	
+	@Autowired
+	EmailBookRepository emailRepo;
+	
+	
+	//고객 조회
+	public void selectAll() {
+		custRepo.findAll().forEach(cust->{
+			log.info(cust.toString());
+		});
+	}
+	
+	// 고객 5명을 insert 하기
+	@Test
+	public void custInsert() {
+		IntStream.range(1, 5).forEach(i->{
+			CustomerEntity cust = CustomerEntity.builder()
+					.customerId("cust" + i)
+					.customerName("택" + i)
+					.customerPhone("010-1234-1233"+i)
+					.build();
+			custRepo.save(cust);
+		});
+	}
+}

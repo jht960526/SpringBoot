@@ -1,0 +1,9 @@
+package com.example.demo.manytoone;
+
+import lombok.Data;
+
+@Data
+public class ResponseEmailCountDTO {
+	String customerName;
+	Integer count;
+}

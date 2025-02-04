@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+
+	<h1>FreeBoard 목록</h1>
+	<table border = "1">
+		<tr>
+		<td>번호</td>
+		<td>제목</td>
+		<td>내용</td>
+		<td>작성자</td>
+		<td>등록일</td>
+		<td>수정일</td>
+		</tr>
+		<tr th:each="${board:boardlist}">
+			<td th:text="${board}"></td>
+		</tr>
+		</table>
+</body>
+</html>

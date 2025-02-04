@@ -1,0 +1,17 @@
+package com.example.demo.repository;
+
+import java.util.List;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import com.example.demo.entity.MemberEntity;
+import com.example.demo.entity.ProfileEntity;
+
+public interface ProfileRepository extends JpaRepository<ProfileEntity, Long>{
+	// 규칙에 맞는 함수들을 정의한다.
+	List<ProfileEntity> findByFnameContaining(String fname);
+	List<ProfileEntity> findByCurrentYnTrue();
+	List<ProfileEntity> findByCurrentYn(boolean yn);
+	List<ProfileEntity> findByMember(MemberEntity member);
+	List<ProfileEntity> findByMemberAndCurrenYn(MemberEntity member);
+}

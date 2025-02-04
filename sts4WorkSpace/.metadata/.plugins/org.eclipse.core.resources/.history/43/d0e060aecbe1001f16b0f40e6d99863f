@@ -1,0 +1,11 @@
+package com.example.demo.manytoone;
+
+import org.springframework.data.querydsl.QuerydslPredicateExecutor;
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.PagingAndSortingRepository;
+
+public interface EmailBookRepository extends CrudRepository<EmailBookEntity, Long>,
+						PagingAndSortingRepository<EmailBookEntity, Long>,
+						QuerydslPredicateExecutor<EmailBookEntity>{
+	
+}

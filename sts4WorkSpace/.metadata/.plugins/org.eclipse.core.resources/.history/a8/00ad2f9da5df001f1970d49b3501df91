@@ -1,0 +1,14 @@
+package com.example.demo.repository;
+
+import java.util.List;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import com.example.demo.entity.MemberEntity;
+
+public interface MemberRepository extends JpaRepository<MemberEntity, String>{
+
+	// Member를 통해서 profile에 접근하기
+	@Query("select ........ from MemberEntity m left outer join ")
+	List<Object[]> getMemberWithProfileCount();
+}

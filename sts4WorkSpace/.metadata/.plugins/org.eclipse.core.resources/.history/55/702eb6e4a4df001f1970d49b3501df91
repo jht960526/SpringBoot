@@ -1,0 +1,35 @@
+package com.example.demo.repository;
+
+import java.util.List;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+
+import com.example.demo.entity.MemberEntity;
+import com.example.demo.entity.ProfileEntity;
+
+public interface ProfileRepository extends JpaRepository<ProfileEntity, Long>{
+	// 규칙에 맞는 함수들을 정의한다.
+	List<ProfileEntity> findByFnameContaining(String fname);
+	List<ProfileEntity> findByCurrentYnTrue();
+	List<ProfileEntity> findByCurrentYn(boolean yn);
+	List<ProfileEntity> findByMember(MemberEntity member);
+	List<ProfileEntity> findByMemberAndCurrenYn(MemberEntity member);
+	//JPQL
+	// [Quiz6] JPQL
+	@Query(" select profile "
+			+ " from #{#entityName} profile"
+			+ " where member = :mm "
+			+ " and currenYn = :yn ")
+	List<ProfileEntity> quiz6(@Param("mm") MemberEntity member, @Param("yn") boolean yn);
+	
+	
+	// [Quiz-6]JPQL nativeQuery
+	@Query(value = "select * "
+			+ " from #{#entityName} profile"
+			+ " where member = :mm "
+			+ " and currenYn = :yn ", nativeQuery = true)
+	List<ProfileEntity> quiz6_1(@Param("mm") String mid,
+											@Param("yn") boolean yn);
+}

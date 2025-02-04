@@ -1,0 +1,8 @@
+package com.example.demo.multikey;
+
+import java.io.Serializable;
+
+// Network 전송시
+public class MultiKeyA implements Serializable{
+	
+}

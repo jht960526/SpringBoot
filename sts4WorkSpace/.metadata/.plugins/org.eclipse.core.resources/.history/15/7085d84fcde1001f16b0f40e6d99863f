@@ -1,0 +1,25 @@
+package com.example.demo.manytoone;
+
+import java.util.List;
+
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.querydsl.QuerydslPredicateExecutor;
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.PagingAndSortingRepository;
+
+public interface EmailBookRepository extends CrudRepository<EmailBookEntity, Long>,
+						PagingAndSortingRepository<EmailBookEntity, Long>,
+						QuerydslPredicateExecutor<EmailBookEntity>{
+	// 1. 기본 제공 함수들이 있다. findAll(), findById(), save(), count()
+	
+	// 2. 규칙에 맞는 함수정의 추가하기
+	List<EmailBookEntity>findByCust(CustomerEntity cust);
+	
+	// 3. JPQL.... native query 아닌경우
+	@Query(value = "SELECT cust.customer_name, COUNT(book.book_id)\r\n"
+			+ "FROM  tbl_customer cust LEFT outer JOIN tbl_emailbook book\r\n"
+			+ "         ON(cust.customer_id = book.cust_customer_id)\r\n"
+			+ "GROUP BY cust.customer_name\r\n"
+			+ "ORDER BY cust.customer_name")
+	List<EmailBookEntity>findByCust2(CustomerEntity cust);
+}

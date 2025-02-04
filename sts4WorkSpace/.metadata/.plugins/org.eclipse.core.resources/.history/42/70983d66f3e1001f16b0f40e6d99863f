@@ -1,0 +1,28 @@
+package com.example.demo.twoway;
+
+import java.sql.Timestamp;
+
+import org.hibernate.annotations.CreationTimestamp;
+
+import io.micrometer.common.lang.NonNull;
+import jakarta.persistence.Column;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+
+
+public class FreeBoardEntity {
+	
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long bno;
+	
+	@NonNull // 자바에서 설정
+	@Column(nullable = false) //DB설정
+	private String title;
+	private String writer;
+	private String content;
+	@CreationTimestamp  //insert시 자동값(insert시각)
+	private Timestamp regdate;
+	private Timestamp updatedate;
+}

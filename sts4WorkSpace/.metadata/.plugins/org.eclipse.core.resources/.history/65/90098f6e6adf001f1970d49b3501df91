@@ -1,0 +1,25 @@
+package com.example.demo.entity;
+
+import java.time.LocalDateTime;
+
+import com.example.demo.dto.GuestBookDTO;
+
+import jakarta.persistence.Entity;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+
+@Data 
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+@Entity
+public class GuestBookEntity {
+		private Long gno;
+		private String title;
+		private String content;
+		private LocalDateTime regDate;
+		private LocalDateTime modDate;
+}

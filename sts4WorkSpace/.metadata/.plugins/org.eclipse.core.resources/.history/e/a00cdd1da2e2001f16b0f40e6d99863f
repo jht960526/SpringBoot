@@ -1,0 +1,7 @@
+package com.example.demo.multikey;
+
+import java.io.Serializable;
+
+public class MultiKeyB implements Serializable{
+	
+}

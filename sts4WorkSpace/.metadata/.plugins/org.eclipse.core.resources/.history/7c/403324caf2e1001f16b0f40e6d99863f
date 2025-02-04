@@ -1,0 +1,11 @@
+package com.example.demo.twoway;
+
+import java.sql.Timestamp;
+
+public class FreeBoardEntity {
+	Long bno;
+	String title;
+	String writer;
+	String content;
+	Timestamp regdate;
+}

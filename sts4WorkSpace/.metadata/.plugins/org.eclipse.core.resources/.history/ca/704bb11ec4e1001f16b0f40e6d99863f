@@ -1,0 +1,16 @@
+package com.example.demo.entity;
+
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+
+public class EmailBookEntity {
+	
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY) //auto increment
+	private Long bookId;
+	@Column(length = 100)
+	private String email;
+	private String password;
+	boolean mainYn;
+}

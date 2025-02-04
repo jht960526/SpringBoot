@@ -1,0 +1,119 @@
+package com.example.demo;
+
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.log;
+
+import java.util.stream.IntStream;
+
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+
+import com.example.demo.manytoone.CustomerEntity;
+import com.example.demo.manytoone.CustomerRepository;
+import com.example.demo.manytoone.EmailBookEntity;
+import com.example.demo.manytoone.EmailBookRepository;
+
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
+@SpringBootTest
+public class ManyToOneTest2 {
+	
+	
+	@Autowired
+	CustomerRepository custRepo;
+	
+	@Autowired
+	EmailBookRepository emailRepo;
+	
+	//[Q1]book_id가 1인 이메일 정보조회
+	//@Test
+	void q1() {
+		Long book_id = 1L;
+		emailRepo.findById(book_id).ifPresentOrElse(entity->{
+			log.info(entity.toString());
+		}, ()->{
+			log.info("Not Found");
+		});
+	}
+	
+	//[Q2]customerId="cust4"인 이메일 정보조회
+	@Test
+	void q2() {
+		String customerId = "cust4";
+		CustomerEntity cust = CustomerEntity.builder()
+				.customerId(customerId)
+				.build();
+		emailRepo.findByCust(cust).forEach(entity->{
+			log.info(entity.toString());
+		});
+	}
+	
+	//[Q3]고객별 이메일의 개수를 조회
+	
+	
+	//emailbook data 조회
+	//@Test
+	void emailSeletAll() {
+		emailRepo.findAll().forEach(entity->{
+			log.info(entity.toString());
+			log.info(entity.getEmail() + "===>" + entity.getCust().getCustomerName());
+		});
+	}
+	
+	
+	//특정 고객의 email insert
+	//@Test
+	public void emailInsert() {
+		String customerId = "cust2";
+		CustomerEntity cust = CustomerEntity.builder().customerId(customerId)
+				.build();
+		
+		EmailBookEntity[] arr = new EmailBookEntity[3];
+		arr[0] = EmailBookEntity.builder()
+				.email("qqqq111@gamil.com")
+				.password("1234")
+				.mainYn(true)
+				.cust(cust)
+				.build();
+		
+		arr[1] = EmailBookEntity.builder()
+				.email("qqqq222@gamil.com")
+				.password("1234")
+				.mainYn(false)
+				.cust(cust)
+				.build();
+		
+		arr[2] = EmailBookEntity.builder()
+				.email("qqqq333@gamil.com")
+				.password("1234")
+				.mainYn(true)
+				.cust(cust)
+				.build();
+		for(EmailBookEntity entity:arr) {
+			emailRepo.save(entity);
+		}
+	}
+	
+	
+	//고객 조회
+	//@Test
+	public void selectAll() {
+		custRepo.findAll().forEach(cust->{
+			log.info(cust.toString());
+		});
+	}
+	
+	// 고객 5명을 insert 하기
+	//@Test
+	public void custInsert() {
+		IntStream.range(1, 5).forEach(i->{
+			CustomerEntity cust = CustomerEntity.builder()
+					.customerId("cust" + i)
+					.customerName("택" + i)
+					.customerPhone("010-1234-1233"+i)
+					.build();
+			custRepo.save(cust);
+		});
+	}
+}

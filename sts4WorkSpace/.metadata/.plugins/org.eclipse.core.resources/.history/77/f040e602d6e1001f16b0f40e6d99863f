@@ -1,0 +1,11 @@
+package com.example.demo.onetomany;
+
+public class PDSBoard {
+	private Long pid;
+	private String pname;
+	private String pwriter;
+	
+	List<PDSFileEntity> files;
+}
+
+// 하나의 board는 여러개의 file를 갖는다.

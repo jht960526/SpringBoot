@@ -1,0 +1,154 @@
+package com.example.demo;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.IntStream;
+
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.Commit;
+
+import com.example.demo.onetomany.PDSBoardEntity;
+import com.example.demo.onetomany.PDSBoardRepository;
+import com.example.demo.onetomany.PDSFileEntity;
+import com.example.demo.onetomany.PDSFileRepository;
+
+import jakarta.transaction.Transactional;
+
+@SpringBootTest
+public class OneToManyTest {
+	@Autowired
+	PDSBoardRepository boardRepo;
+	
+	@Autowired
+	PDSFileRepository fileRepo;
+	
+	@Transactional
+	//@Test
+	void selectBoard() {
+		boardRepo.findAll().forEach(board->{
+			
+			System.out.println("pid: " + board.getPid());
+			System.out.println("pname: " + board.getPname());
+			System.out.println("pwriter: " + board.getPwriter());
+			System.out.println(board); //toString()이 자동호출된다.
+			System.out.println("files: " + board.getFiles());
+		});
+	}
+	
+	//board를 통해서 file수정
+	// 1. board 3번의 첨부 파일들을 지우자~(참조 안함)
+	//@Test
+	void fileReferenceNo() {
+		PDSBoardEntity entity3 = boardRepo.findById(3L).get();
+		List<PDSFileEntity> files3 = entity3.getFiles();
+		files3.clear();
+		boardRepo.save(entity3);
+	}
+	
+	//2. board 4번의 첨부파일을 5번으로 바꾸자~
+	@Test
+	void change() {
+		PDSBoardEntity entity5 = boardRepo.findById(5L).get();
+		PDSBoardEntity entity6 = boardRepo.findById(6L).get();
+		List<PDSFileEntity> files4 = entity5.getFiles();
+		List<PDSFileEntity> files5 = entity6.getFiles();
+		
+		files4.forEach(f->{
+			files5.add(f); //주소가 복사
+		});
+		boardRepo.save(entity6);
+	}
+	
+	//3. board 6번에 첨부파일 2개 추가하기
+	//@Test
+	void add() {
+		PDSBoardEntity entity6 = boardRepo.findById(6L).get();
+		List<PDSFileEntity> files6 = entity6.getFiles();
+		files6.add(new PDSFileEntity(null,"2차 플젝.pdf")); //insert, update
+		files6.add(new PDSFileEntity(null,"2차 플젝.pdf")); //insert, update
+		boardRepo.save(entity6);
+	}
+	
+	//pdsno is null인 data를 삭제하기
+	@Commit //@Test인 경우... 작업 후 Rollback된다. Commit하기를 원하면 @Commit 추가하기
+	@Transactional
+	void fileDelete() {
+		fileRepo.fileDelete();
+	}
+	
+	void fileUpdate() {
+		boardRepo.findAll().forEach(board->{
+			System.out.println("pid: " + board.getPid());
+			System.out.println("pname: " + board.getPname());
+			System.out.println("pwriter: " + board.getPwriter());
+			System.out.println("pfiles: " + board.getFiles());
+			
+			
+			//board pid=1의 files를 10번의 첨부파일로 변경하고자한다.
+			PDSBoardEntity board10 = PDSBoardEntity.builder().pid(10L).build();
+			List<PDSFileEntity> files10 = boardRepo.findById(10L).get().getFiles();
+			
+			if(board.getPid()==1L) {
+				List<PDSFileEntity> files = board.getFiles();
+				files.forEach(file->{
+					files10.add(file); //10번에 추가
+					files.remove(file); //1번의 파일 삭제
+				});
+			}
+			
+			boardRepo.save(board);
+		});
+	}
+	
+	//file insert
+	//@Test
+	void fileInsert() {
+		IntStream.rangeClosed(1, 5).forEach(i->{
+			PDSFileEntity entity = PDSFileEntity.builder().filename("화요일백업-"+i + ".zip").build();
+			fileRepo.save(entity);
+		});
+	}
+	
+	
+	//@Test //file 40~44번까지 select하기
+	void fileSelect() {
+		Long[] arr = {40L,41L,42L,43L,44L};
+		List<PDSFileEntity> flist = fileRepo.findAllById(Arrays.asList(arr));
+		PDSBoardEntity entity6 = boardRepo.findById(6L).get();
+		List<PDSFileEntity> files6 = entity6.getFiles();
+		flist.forEach(f->{
+			files6.add(f);
+		});
+		boardRepo.save(entity6);
+	}
+	
+	
+	
+	//board insert... 10건...  각각의 board에 첨부 파일이 3건
+	//@Test
+	void boardInsert() {
+		
+		IntStream.rangeClosed(1, 10).forEach(i->{
+			
+			List<PDSFileEntity>fileList = new ArrayList<>();
+			IntStream.rangeClosed(1, 3).forEach(j->{
+				PDSFileEntity file = PDSFileEntity.builder()
+						.filename("첨부파일-"+ i +"-"+j+".ppt")
+						.build();
+				fileList.add(file);
+			});
+			
+			PDSBoardEntity board = PDSBoardEntity.builder()
+					.pname("board"+i)
+					.pwriter("user" +(i%5+1))
+					.files(fileList)
+					.build();
+			
+			
+			boardRepo.save(board); //
+		});
+	}
+}
